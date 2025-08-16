@@ -110,9 +110,7 @@ function logout() {
   showAlert("Sesión cerrada exitosamente", "success");
 }
 
-// Check if user is already logged in
 window.addEventListener("load", function () {
-  const currentUser = sessionStorage.getItem("currentUser");
   if (currentUser) {
     const user = JSON.parse(currentUser);
     document.getElementById("loginContainer").style.display = "none";
