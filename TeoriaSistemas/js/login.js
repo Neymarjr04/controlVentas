@@ -1,51 +1,42 @@
-const demoUsers = {
-  admin: {
-    password: "admin123",
-    nombre: "Administrador",
-    rol: "administrador",
-  },
-  cajero: {
-    password: "cajero123",
-    nombre: "Cajero Principal",
-    rol: "cajero",
-  },
-  vendedor: {
-    password: "vendedor123",
-    nombre: "Vendedor",
-    rol: "vendedor",
-  },
-};
+/**
+ * @typedef {{
+ *  status:string,
+ *  mensaje:string,
+ *  data:Array
+ * }} Response
+ * 
+ */
+$(document).ready(function () {
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-// Login functionality
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const usuario = document.getElementById("usuario").value;
-  const password = document.getElementById("password").value;
-
-  if (demoUsers[usuario] && demoUsers[usuario].password === password) {
-    // Simular login exitoso
-    sessionStorage.setItem("currentUser", JSON.stringify(demoUsers[usuario]));
-    showAlert("Login exitoso", "success");
-
-    setTimeout(() => {
-      document.getElementById("loginContainer").style.display = "none";
-      document.getElementById("dashboard").style.display = "block";
-      document.getElementById(
-        "userInfo"
-      ).textContent = `Usuario: ${demoUsers[usuario].nombre}`;
-    }, 1000);
-  } else {
-    showAlert("Usuario o contraseña incorrectos", "error");
-  }
+    const usuario = document.getElementById("usuario").value;
+    const password = document.getElementById("password").value;
+    const datos = {
+      usuario,
+      password,
+    };
+    $.post("./model/tasks/loginTask.php", datos, (response) => {
+      /**@type {Response}  */
+      const respuesta  = JSON.parse(response);
+      if(respuesta.status !== "bien"){
+        showAlert(respuesta.mensaje,"error");
+      }
+      console.log(respuesta);
+      showAlert(respuesta.mensaje,"bien",true);
+    });
+  });
 });
 
-function showAlert(message, type) {
+function showAlert(message, type,estado = false) {
   const alertContainer = document.getElementById("alertContainer");
   alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
 
   setTimeout(() => {
-    alertContainer.innerHTML = "";
+    alertContainer.innerHTML = "";  
+    if(estado){
+      location.reload(true);
+    }
   }, 3000);
 }
 

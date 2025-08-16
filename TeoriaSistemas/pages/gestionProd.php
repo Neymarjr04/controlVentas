@@ -9,9 +9,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles/gestionProd.css" />
+    <link rel="stylesheet" href="./styles/navbar.css">
     <script defer src="./js/gestionProd.js"></script>
   </head>
   <body>
+    <?php include "components/aside.php"; ?>
     <div class="container">
       <div class="header">
         <h1>

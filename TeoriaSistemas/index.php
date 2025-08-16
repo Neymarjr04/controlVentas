@@ -2,7 +2,7 @@
     require_once("controller/controlador.php");
     session_start();
 
-    if (isset($_SESSION['token']) && isset($_SESSION['usuario'])) {
+    if ( isset($_SESSION['usuario'])) {
 
         $valor = $_SERVER["REQUEST_URI"];
 
@@ -16,7 +16,7 @@
                 ModeloControlador::error_pagina();
             }
         } else {
-            ModeloControlador::ventas() ;
+            ModeloControlador::productos();
         };
     } else {
         ModeloControlador::login();

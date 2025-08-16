@@ -46,9 +46,13 @@ body {
 
 .form-group label {
   display: block;
+  position: absolute;
   margin-bottom: 8px;
   color: #333;
   font-weight: 500;
+  top: 30%;
+  left: 15px;
+  transition: all 0.3s  ease;
 }
 
 .form-group input {
@@ -64,6 +68,11 @@ body {
   border-color: #667eea;
   outline: none;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input:focus ~ label{
+  transform: translateY(-25px);
+  background-color: #ffffffe8;
 }
 
 .form-group i {
