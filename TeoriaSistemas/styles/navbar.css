@@ -7,7 +7,7 @@ body{
 
 .container{
     max-width: 1400px;
-    width: 80%;
+    width: 100%;
 }
 
 .dashboard {
@@ -16,14 +16,27 @@ body{
 }
 
 .sidebar {
-  width: 280px;
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
   color: white;
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.sidebar.active {
+  width: 280px;
+}
+
+.sidebar.desactive{
+  width: 70px;
+}
+
+.sidebar.desactive .textoNavbar{
+  display: none;
+  font-size: 10px;
 }
 
 .sidebar-header {
@@ -37,12 +50,16 @@ body{
 }
 
 .menu-item {
-  display: block;
-  padding: 15px 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 10px;
   color: white;
   text-decoration: none;
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
+  height: 45px;
+  width: 100%;
 }
 
 .menu-item:hover,
@@ -142,4 +159,10 @@ body{
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.flechaNavbar{
+  position: absolute;
+  bottom: 0;
+  cursor: pointer;
 }

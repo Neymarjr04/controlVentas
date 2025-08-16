@@ -25,5 +25,9 @@
         include "pages/errorPages.php";
     }
 
+    public static function cerrarSecion(){
+        include "pages/cerrarSecion.php";
+    }
+
    } 
 ?>

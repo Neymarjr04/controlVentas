@@ -19,6 +19,8 @@
     }
     session_start();
     $_SESSION["usuario"] = $resultado[0];
+    $_SESSION["nombre"] = $resultado[1];
+    $_SESSION["rol"] = $resultado[2];
     Response::success(mensaje:"Datos correctos",data:$resultado[0]);
 
 ?>

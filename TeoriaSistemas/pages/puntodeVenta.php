@@ -1,3 +1,7 @@
+<?php
+  $direccion = "ventas";
+?>
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -9,10 +13,13 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles/puntoVenta.css" />
+    <link rel="stylesheet" href="./styles/navbar.css">
+    <script defer src="./js/index.js"></script>
     <script defer src="./js/puntoVenta.js"></script>
   </head>
   <body>
-    <div class="pos-container">
+    <?php include "components/aside.php";?>
+    <div class="pos-container container">
       <!-- Panel Izquierdo - Productos -->
       <div class="pos-left">
         <div class="pos-header">
@@ -195,6 +202,5 @@
       </div>
     </div>
 
-    // Datos de ejemplo para productos
   </body>
 </html>

@@ -1,20 +1,25 @@
-<aside class="sidebar">
+<aside id="sidebarMaster" class="sidebar  desactive">
     <div class="sidebar-header">
-        <h2><i class="fas fa-store"></i> Abarrotes</h2>
-        <p id="userInfo">Usuario: Admin</p>
+        <h2><i class="fas fa-store"></i> <p class="textoNavbar" > ABARROTES </p> </h2>
+        <p id="userInfo"><p class="textoNavbar" > usuario</p> <?php echo $_SESSION['nombre']; ?> </p>
     </div>
     <nav class="sidebar-menu">
         <a
             href="#dashboard"
-            class="menu-item active"
+            class="menu-item"
             data-section="dashboard">
-            <i class="fas fa-tachometer-alt"></i> Panel de Control
+            <i class="fas fa-tachometer-alt"></i> 
+            <p class="textoNavbar" > Panel de control </p>
         </a>
-        <a href="/puntodeVenta.html" class="menu-item" data-section="ventas">
-            <i class="fas fa-cash-register"></i> Punto de Venta
+        <a href="/ventas" class="menu-item <?php echo ($direccion == "ventas")?"active":""?>" data-section="ventas">
+            <i class="fas fa-cash-register"></i> 
+            <p class="textoNavbar" > Punto de venta </p>
+
         </a>
-        <a href="./gestionProd.php" class="menu-item">
-            <i class="fas fa-box"></i> Productos
+        <a href="/productos" class="menu-item <?php echo ($direccion == "productos")?"active":""?> ">
+            <i class="fas fa-box"></i> 
+            <p class="textoNavbar" > Productos </p>
+
         </a>
         <!-- <a href="#clientes" class="menu-item" data-section="clientes">
             <i class="fas fa-users"></i> Clientes
@@ -28,18 +33,28 @@
           <a href="#inventario" class="menu-item" data-section="inventario">
             <i class="fas fa-warehouse"></i> Inventario
           </a> -->
-        <!-- <a href="#caja" class="menu-item" data-section="caja">
+        <!--<a href="/sistema" class="menu-item <?php echo ($direccion == "ventas")?"sistema":""?>" data-section="caja">
             <i class="fas fa-money-bill-wave"></i> Caja
           </a> -->
-        <a href="./reportes.php" class="menu-item" data-section="reportes">
-            <i class="fas fa-chart-bar"></i> Reportes
+        <a href="/reportes" class="menu-item <?php echo ($direccion == "reporte")?"active":""?> " data-section="reportes">
+            <i class="fas fa-chart-bar"></i> 
+            <p class="textoNavbar" >Reportes</p>
         </a>
-        <!-- <a
-            href="#configuracion"
+        <a
+            href="cerrarSecion"
             class="menu-item"
             data-section="configuracion"
           >
-            <i class="fas fa-cog"></i> Configuración
-          </a> -->
+            <i class="fas fa-cog"></i>
+            <p class="textoNavbar" >Cerrar secion </p>
+        </a>
+
+        <div class="flechaNavbar menu-item ">
+          <p>
+            <i class="fa-solid fa-arrow-right"></i>
+            <p class="textoNavbar" > Desplazador </p>
+          </p>
+        </div>
+
     </nav>
 </aside>

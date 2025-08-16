@@ -1,3 +1,6 @@
+<?php
+  $direccion = "productos";
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -10,6 +13,7 @@
     />
     <link rel="stylesheet" href="./styles/gestionProd.css" />
     <link rel="stylesheet" href="./styles/navbar.css">
+    <script defer src="./js/index.js"></script>
     <script defer src="./js/gestionProd.js"></script>
   </head>
   <body>

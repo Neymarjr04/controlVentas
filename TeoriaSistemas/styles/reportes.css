@@ -18,8 +18,8 @@ body {
 .header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 25px;
-  border-radius: 15px;
+  padding: 20px;
+  border-radius: 0;
   margin-bottom: 25px;
   display: flex;
   justify-content: space-between;

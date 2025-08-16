@@ -1,3 +1,6 @@
+<?php
+  $direccion = "reporte";
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -10,9 +13,12 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="./styles/reportes.css" />
+    <link rel="stylesheet" href="./styles/navbar.css">
     <script src="./js/reportes.js"></script>
+
   </head>
   <body>
+    <?php include "components/aside.php" ?>
     <div class="container">
       <div class="header">
         <h1>

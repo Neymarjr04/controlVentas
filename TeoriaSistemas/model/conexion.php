@@ -37,7 +37,7 @@
     }
 
     public function validador_cuenta($dni,$contra){
-        $this->sql = "select id from usuarios where usuario = '$dni' AND contraseña='$contra';";
+        $this->sql = "select id,nombre,rol,estado from usuarios where usuario = '$dni' AND contraseña='$contra';";
         $resultado = $this->conexion->prepare($this->sql);
         $resultado->execute();
         return $resultado->fetchAll(PDO::FETCH_COLUMN);
