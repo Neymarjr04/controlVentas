@@ -56,6 +56,13 @@ $(document).ready(function () {
         localStorage.setItem("categorias",JSON.stringify(respuestaServer.data));
       });
 
+      $.post("./model/tasks/caja/getCajaTask.php",(response)=>{
+        const respuesta = JSON.parse(response);
+        if(respuesta.status == "bien"){
+          localStorage.setItem("cajas",respuesta.data);
+        }
+      });
+
       showAlert(respuesta.mensaje,"succes",true);
     });
   });

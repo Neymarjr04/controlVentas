@@ -1,6 +1,7 @@
 <?php
 require("../Response.php");
 require("../conexion.php");
+session_start();
 
 $payload = json_decode(file_get_contents("php://input"), true);
 if (!$payload) $payload = $_POST;
@@ -10,13 +11,18 @@ if (!isset($payload["productos"]) || !is_array($payload["productos"])) {
     return;
 }
 
+$db = new Conexion();
+
 $productos = $payload["productos"];
 $cliente_id = isset($payload["cliente_id"]) ? intval($payload["cliente_id"]) : "NULL";
-$usuario_id = isset($payload["usuario_id"]) ? intval($payload["usuario_id"]) : 0;
-$caja_id = isset($payload["caja_id"]) ? intval($payload["caja_id"]) : 0;
+$usuario_id = $_SESSION['usuario'];
 $metodo_pago = isset($payload["metodo_pago"]) ? strtolower($payload["metodo_pago"]) : "";
 $tipo_comprobante = isset($payload["tipo_comprobante"]) ? strtolower($payload["tipo_comprobante"]) : "ticket";
 $descuento = isset($payload["descuento"]) ? floatval($payload["descuento"]) : 0;
+
+$db->consulta2("");
+
+$caja_id = isset($payload["caja_id"]) ? intval($payload["caja_id"]) : 0;
 
 if (!$usuario_id || !$caja_id || !$metodo_pago) {
     Response::error("usuario_id, caja_id y metodo_pago son obligatorios");
@@ -30,7 +36,6 @@ if (!in_array($metodo_pago, $permitidos_pago) || !in_array($tipo_comprobante, $p
     return;
 }
 
-$db = new Conexion();
 
 $igv = floatval($db->consulta2("SELECT igv FROM configuracion ORDER BY id DESC LIMIT 1"));
 if ($igv <= 0) $igv = 18.00;

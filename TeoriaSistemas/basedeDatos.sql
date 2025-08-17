@@ -75,6 +75,7 @@ CREATE TABLE caja (
     monto_final DECIMAL(10,2) NULL,
     estado ENUM('abierta', 'cerrada') DEFAULT 'abierta',
     observaciones TEXT,
+    nombre VARCHAR(50) DEFAULT 'caja',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 

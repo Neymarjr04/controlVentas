@@ -54,6 +54,13 @@
         $resultado->execute();
         return $resultado->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function addDato($query){
+      $this->sql = $query;
+      $resultado = $this->conexion->prepare($this->sql);
+      $resultado->execute();
+      return $this->conexion->lastInsertId();
+    }
   }
 
 ?>

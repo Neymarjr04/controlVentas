@@ -14,6 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="./styles/reportes.css" />
     <link rel="stylesheet" href="./styles/navbar.css">
+    <script defer src="./js/index.js"></script>
     <script src="./js/reportes.js"></script>
 
   </head>

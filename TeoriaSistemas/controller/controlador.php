@@ -29,5 +29,9 @@
         include "pages/cerrarSecion.php";
     }
 
+    public static function caja(){
+        include "pages/cajaPage.php";
+    }
+
    } 
 ?>

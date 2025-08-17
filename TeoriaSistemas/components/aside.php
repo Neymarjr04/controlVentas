@@ -39,9 +39,12 @@
           <a href="#inventario" class="menu-item" data-section="inventario">
             <i class="fas fa-warehouse"></i> Inventario
           </a> -->
-        <!--<a href="/sistema" class="menu-item <?php echo ($direccion == "ventas")?"sistema":""?>" data-section="caja">
-            <i class="fas fa-money-bill-wave"></i> Caja
-          </a> -->
+        <?php if($_SESSION["rol"] == "administrador" ){?>
+        <a href="/caja" class="menu-item <?php echo ($direccion == "caja")?"active":""?>" data-section="caja">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <p class="textoNavbar" > Caja </p>
+        </a> 
+        <?php }?>
         <a href="/reportes" class="menu-item <?php echo ($direccion == "reporte")?"active":""?> " data-section="reportes">
             <i class="fas fa-chart-bar"></i> 
             <p class="textoNavbar" >Reportes</p>
