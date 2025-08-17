@@ -22,8 +22,41 @@ $(document).ready(function () {
       if(respuesta.status !== "bien"){
         showAlert(respuesta.mensaje,"error");
       }
-      console.log(respuesta);
-      showAlert(respuesta.mensaje,"bien",true);
+      
+      $.post("./model/tasks/obtenerProductosTask.php",(response2)=>{
+        const datos = JSON.parse(response2);
+        let productos = [];
+        datos.data.forEach((objeto)=>{
+          let producto = {
+            id:objeto.id,
+            nombre:objeto.nombre,
+            codigo_barras:objeto.codigo_barras,
+            categoria_id:objeto.categoria_id,
+            categoria_nombre:objeto.categoria_nombre,
+            descripcion:objeto.descripcion,
+            precio_compra:Number(objeto.precio_compra),
+            precio_venta:Number(objeto.precio_venta),
+            stock_actual:Number(objeto.stock_actual),
+            stock_minimo:Number(objeto.stock_minimo),
+            unidad_medida:objeto.unidad_medida,
+            estado:objeto.estado,
+            fecha_registro:Date(objeto.fecha_registro) 
+          }
+          productos.push(producto);
+        })
+        localStorage.setItem("products", JSON.stringify(productos));
+      });
+
+      $.post("./model/tasks/getCategoriasTask.php",(response)=>{
+        const respuestaServer = JSON.parse(response);
+        console.log("lleg aqui");
+        if(respuestaServer.status !== "bien"){
+          showAlert(respuesta.mensaje,"error");
+        }
+        localStorage.setItem("categorias",JSON.stringify(respuestaServer.data));
+      });
+
+      showAlert(respuesta.mensaje,"succes",true);
     });
   });
 });

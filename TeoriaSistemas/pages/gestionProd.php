@@ -1,5 +1,7 @@
 <?php
   $direccion = "productos";
+
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,6 +15,8 @@
     />
     <link rel="stylesheet" href="./styles/gestionProd.css" />
     <link rel="stylesheet" href="./styles/navbar.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="./js/index.js"></script>
     <script defer src="./js/gestionProd.js"></script>
   </head>
@@ -53,11 +57,6 @@
             <label>Categoría</label>
             <select id="categoryFilter">
               <option value="">Todas las categorías</option>
-              <option value="abarrotes">Abarrotes</option>
-              <option value="bebidas">Bebidas</option>
-              <option value="limpieza">Limpieza</option>
-              <option value="snacks">Snacks</option>
-              <option value="lacteos">Lácteos</option>
             </select>
           </div>
           <div class="form-group">

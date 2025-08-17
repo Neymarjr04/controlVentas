@@ -17,11 +17,14 @@
         Response::error(mensaje:"Esta cuenta no existe");
         return;
     }
+    if( $resultado["estado"] != "1"){
+        Response::error("Este usuario esta Inactivo");
+    }
     session_start();
-    $_SESSION["usuario"] = $resultado[0];
-    $_SESSION["nombre"] = $resultado[1];
-    $_SESSION["rol"] = $resultado[2];
-    Response::success(mensaje:"Datos correctos",data:$resultado[0]);
+    $_SESSION["usuario"] = $resultado["id"];
+    $_SESSION["nombre"] = $resultado["nombre"];
+    $_SESSION["rol"] = $resultado["rol"];
+    Response::success(mensaje:"Datos correctos",data:$resultado["id"]);
 
 ?>
 

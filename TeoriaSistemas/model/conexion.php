@@ -30,8 +30,20 @@
           $this->sql = $consulta;
           $resultado = $this->conexion->prepare($this->sql);
           $resultado->execute();
+          return $resultado->fetchAll(PDO::FETCH_ASSOC);
+      } catch (PDOException $e) {
+          return -1;
+      }
+    }
+
+    public function consulta2($consulta){
+      try {
+          $this->sql = $consulta;
+          $resultado = $this->conexion->prepare($this->sql);
+          $resultado->execute();
           return $resultado->fetchAll(PDO::FETCH_COLUMN);
       } catch (PDOException $e) {
+          print_r($e);
           return -1;
       }
     }
@@ -40,7 +52,7 @@
         $this->sql = "select id,nombre,rol,estado from usuarios where usuario = '$dni' AND contraseña='$contra';";
         $resultado = $this->conexion->prepare($this->sql);
         $resultado->execute();
-        return $resultado->fetchAll(PDO::FETCH_COLUMN);
+        return $resultado->fetch(PDO::FETCH_ASSOC);
     }
   }
 

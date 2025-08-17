@@ -167,7 +167,7 @@ CREATE TABLE configuracion (
 
 -- Insertar datos iniciales
 INSERT INTO usuarios (nombre, usuario, contraseña, rol) VALUES 
-('Administrador', 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'administrador');
+('Administrador', 'admin', 'master123', 'administrador');
 
 INSERT INTO categorias (nombre, descripcion) VALUES 
 ('Abarrotes', 'Productos básicos de alimentación'),
@@ -178,3 +178,25 @@ INSERT INTO categorias (nombre, descripcion) VALUES
 
 INSERT INTO configuracion (nombre_empresa, ruc_empresa, direccion_empresa, telefono_empresa, email_empresa) VALUES 
 ('Abarrotes Don José', '20123456789', 'Av. Principal 123, Lima', '987654321', 'contacto@abarrotes.com');
+
+INSERT INTO productos(codigo_barras,nombre,descripcion,categoria_id,precio_compra,precio_venta,stock_actual,stock_minimo,unidad_medida) VALUES
+('750100000001','Arroz Costeño 5kg','Arroz extra calidad en saco de 5kg',1,18.50,22.00,120,20,'kg'),
+('750100000002','Aceite Primor 1L','Aceite vegetal refinado botella 1L',1,7.20,9.00,80,15,'L'),
+('750100000003','Leche Gloria 400g','Leche evaporada entera en lata',1,3.10,4.00,200,30,'unidad'),
+('750100000004','Pan Bimbo Blanco','Pan de molde blanco 500g',1,4.00,5.50,60,10,'unidad'),
+('750100000005','Detergente Ariel 1kg','Detergente en polvo para ropa',2,10.50,13.00,90,15,'kg'),
+('750100000006','Shampoo Sedal 750ml','Shampoo hidratante cabello normal',2,11.00,14.50,70,10,'L'),
+('750100000007','Jabón Dove 90g','Jabón de tocador humectante',2,2.20,3.00,150,25,'unidad'),
+('750100000008','Cereal Zucaritas 300g','Cereal de maíz azucarado',1,6.50,8.50,50,10,'unidad'),
+('750100000009','Azúcar Rubia 1kg','Azúcar rubia en bolsa 1kg',1,4.20,5.20,110,20,'kg'),
+('750100000010','Laptop Lenovo i5','Laptop 14" Intel Core i5, 8GB RAM, 256GB SSD',3,2100.00,2600.00,10,2,'unidad'),
+('750100000011','Mouse Logitech M170','Mouse inalámbrico óptico USB',3,40.00,55.00,35,5,'unidad'),
+('750100000012','Teclado Redragon K552','Teclado mecánico retroiluminado',3,95.00,120.00,25,5,'unidad'),
+('750100000013','Celular Samsung A14','Smartphone 128GB, 4GB RAM',3,650.00,820.00,15,3,'unidad'),
+('750100000014','Cerveza Cusqueña 310ml','Botella de cerveza dorada',4,3.50,5.00,200,40,'unidad'),
+('750100000015','Vino Tabernero Borgoña 750ml','Vino de mesa borgoña tinto',4,18.00,25.00,30,5,'L'),
+('750100000016','Agua San Luis 625ml','Agua mineral sin gas',4,1.20,1.80,250,50,'unidad'),
+('750100000017','Cuaderno Stanford A4','Cuaderno cuadriculado 100 hojas',5,6.50,9.00,80,15,'unidad'),
+('750100000018','Lapicero Pilot Azul','Lapicero tinta azul 0.7mm',5,1.50,2.20,300,50,'unidad'),
+('750100000019','Resaltador Stabilo Amarillo','Resaltador fluorescente amarillo',5,2.80,4.00,120,20,'unidad'),
+('750100000020','Tijera Maped 6"','Tijera escolar de acero inoxidable',5,3.50,5.50,60,10,'unidad');

@@ -1,7 +1,13 @@
+<?php
+  session_start();
+?>
 <aside id="sidebarMaster" class="sidebar  desactive">
     <div class="sidebar-header">
-        <h2><i class="fas fa-store"></i> <p class="textoNavbar" > ABARROTES </p> </h2>
-        <p id="userInfo"><p class="textoNavbar" > usuario</p> <?php echo $_SESSION['nombre']; ?> </p>
+        <h2><i class="fas fa-store"></i> <p class="textoNavbar" > ABARROTES </p> </h2>          
+        </p> 
+          <i class="fa-solid fa-user"></i>
+           <?php echo $_SESSION['nombre']; ?> 
+          </p>
     </div>
     <nav class="sidebar-menu">
         <a
@@ -45,7 +51,7 @@
             class="menu-item"
             data-section="configuracion"
           >
-            <i class="fas fa-cog"></i>
+          <i class="fa-solid fa-door-open"></i>
             <p class="textoNavbar" >Cerrar secion </p>
         </a>
 

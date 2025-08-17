@@ -14,93 +14,34 @@ let products = [
     estado: 1,
     fecha_registro: "2024-08-01",
   },
-  {
-    id: 2,
-    nombre: "Pan Integral",
-    codigo_barras: "7894900011518",
-    categoria_id: 1,
-    categoria_nombre: "Abarrotes",
-    descripcion: "Pan integral artesanal",
-    precio_compra: 3.2,
-    precio_venta: 4.2,
-    stock_actual: 25,
-    stock_minimo: 5,
-    unidad_medida: "unidad",
-    estado: 1,
-    fecha_registro: "2024-08-01",
-  },
-  {
-    id: 3,
-    nombre: "Leche Gloria UHT",
-    codigo_barras: "7894900011519",
-    categoria_id: 5,
-    categoria_nombre: "Lácteos",
-    descripcion: "Leche UHT entera 1L",
-    precio_compra: 3.8,
-    precio_venta: 4.8,
-    stock_actual: 32,
-    stock_minimo: 15,
-    unidad_medida: "litro",
-    estado: 1,
-    fecha_registro: "2024-08-01",
-  },
-  {
-    id: 4,
-    nombre: "Aceite Primor 1L",
-    codigo_barras: "7894900011520",
-    categoria_id: 1,
-    categoria_nombre: "Abarrotes",
-    descripcion: "Aceite vegetal para cocinar",
-    precio_compra: 6.5,
-    precio_venta: 8.5,
-    stock_actual: 2,
-    stock_minimo: 8,
-    unidad_medida: "litro",
-    estado: 1,
-    fecha_registro: "2024-08-01",
-  },
-  {
-    id: 5,
-    nombre: "Detergente Ariel",
-    codigo_barras: "7894900011521",
-    categoria_id: 3,
-    categoria_nombre: "Limpieza",
-    descripcion: "Detergente en polvo 500g",
-    precio_compra: 9.9,
-    precio_venta: 12.9,
-    stock_actual: 8,
-    stock_minimo: 5,
-    unidad_medida: "paquete",
-    estado: 1,
-    fecha_registro: "2024-08-01",
-  },
-  {
-    id: 6,
-    nombre: "Galletas Oreo",
-    codigo_barras: "7894900011522",
-    categoria_id: 4,
-    categoria_nombre: "Snacks",
-    descripcion: "Galletas con crema de vainilla",
-    precio_compra: 4.2,
-    precio_venta: 5.2,
-    stock_actual: 28,
-    stock_minimo: 10,
-    unidad_medida: "paquete",
-    estado: 1,
-    fecha_registro: "2024-08-01",
-  },
 ];
-
+products = JSON.parse(localStorage.getItem("products"));
 let currentPage = 1;
 let itemsPerPage = 10;
 let filteredProducts = [...products];
 let editingProduct = null;
-localStorage.setItem("products", JSON.stringify(products));
+//localStorage.setItem("products", JSON.stringify(products));
 // Inicializar la aplicación
 document.addEventListener("DOMContentLoaded", function () {
+  loadCategorias();
   setupEventListeners();
   loadProducts();
 });
+
+function loadCategorias() {
+  const htmlcategoria = document.getElementById("categoryFilter");
+  const productosCategory = document.getElementById("productCategory");
+  const categorias = JSON.parse(localStorage.getItem("categorias"));
+  let textCategoria = `<option value="">Todas las categorías</option>`;
+
+  categorias.forEach((categoria) => {
+    if (categoria.estado == "1") {
+      textCategoria += `<option value="${categoria.id}"> ${categoria.nombre} </option>`;
+    }
+  });
+  htmlcategoria.innerHTML = textCategoria;
+  productosCategory.innerHTML = textCategoria;
+}
 
 function setupEventListeners() {
   // Búsqueda en tiempo real
@@ -148,7 +89,8 @@ function loadProducts() {
   const categoryFilter = document.getElementById("categoryFilter").value;
   const statusFilter = document.getElementById("statusFilter").value;
 
-  // Aplicar filtros
+  console.log(categoryFilter);
+
   filteredProducts = products.filter((product) => {
     const matchesSearch =
       !searchTerm ||
@@ -169,6 +111,69 @@ function loadProducts() {
   updateStats();
 }
 
+function productosLoad(product) {
+  let datos = `
+                  <tr>
+                      <td>
+                          <div class="product-info">
+                              <div class="product-image">
+                                  <i class="fas fa-box"></i>
+                              </div>
+                              <div class="product-details">
+                                  <h4>${product.nombre}</h4>
+                                  <p>${
+                                    product.descripcion || "Sin descripción"
+                                  }</p>
+                              </div>
+                          </div>
+                      </td>
+                      <td>${product.codigo_barras || "N/A"}</td>
+                      <td>${product.categoria_nombre}</td>
+                      <td class="price-cell">S/ ${product.precio_compra.toFixed(
+                        2
+                      )}</td>
+                      <td class="price-cell">S/ ${product.precio_venta.toFixed(
+                        2
+                      )}</td>
+                      <td>
+                          <span class="stock-badge ${getStockClass(
+                            product.stock_actual,
+                            product.stock_minimo
+                          )}">
+                              ${product.stock_actual} ${product.unidad_medida}
+                          </span>
+                      </td>
+                      <td>
+                          <span class="status-badge ${
+                            product.estado ? "status-active" : "status-inactive"
+                          }">
+                              ${product.estado ? "Activo" : "Inactivo"}
+                          </span>
+                      </td>
+                      <td>
+                          <div class="action-buttons">
+                              <button class="btn btn-info btn-sm" onclick="editProduct(${
+                                product.id
+                              })" title="Editar">
+                                  <i class="fas fa-edit"></i>
+                              </button>
+                              <button class="btn btn-warning btn-sm" onclick="adjustStock(${
+                                product.id
+                              })" title="Ajustar Stock">
+                                  <i class="fas fa-warehouse"></i>
+                              </button>
+                              <button class="btn btn-danger btn-sm" onclick="toggleProductStatus(${
+                                product.id
+                              })" title="Cambiar Estado">
+                                  <i class="fas fa-power-off"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+              `;
+  return datos;
+}
+
 function displayProducts() {
   const tbody = document.getElementById("productsTableBody");
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -177,77 +182,17 @@ function displayProducts() {
 
   if (pageProducts.length === 0) {
     tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 40px; color: #6c757d;">
-                            <i class="fas fa-box" style="font-size: 3em; opacity: 0.3; margin-bottom: 15px; display: block;"></i>
-                            No se encontraron productos
-                        </td>
-                    </tr>`;
+                      <tr>
+                          <td colspan="8" style="text-align: center; padding: 40px; color: #6c757d;">
+                              <i class="fas fa-box" style="font-size: 3em; opacity: 0.3; margin-bottom: 15px; display: block;"></i>
+                              No se encontraron productos
+                          </td>
+                      </tr>`;
     return;
   }
 
   tbody.innerHTML = pageProducts
-    .map(
-      (product) => `
-                <tr>
-                    <td>
-                        <div class="product-info">
-                            <div class="product-image">
-                                <i class="fas fa-box"></i>
-                            </div>
-                            <div class="product-details">
-                                <h4>${product.nombre}</h4>
-                                <p>${
-                                  product.descripcion || "Sin descripción"
-                                }</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${product.codigo_barras || "N/A"}</td>
-                    <td>${product.categoria_nombre}</td>
-                    <td class="price-cell">S/ ${product.precio_compra.toFixed(
-                      2
-                    )}</td>
-                    <td class="price-cell">S/ ${product.precio_venta.toFixed(
-                      2
-                    )}</td>
-                    <td>
-                        <span class="stock-badge ${getStockClass(
-                          product.stock_actual,
-                          product.stock_minimo
-                        )}">
-                            ${product.stock_actual} ${product.unidad_medida}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="status-badge ${
-                          product.estado ? "status-active" : "status-inactive"
-                        }">
-                            ${product.estado ? "Activo" : "Inactivo"}
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn btn-info btn-sm" onclick="editProduct(${
-                              product.id
-                            })" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-warning btn-sm" onclick="adjustStock(${
-                              product.id
-                            })" title="Ajustar Stock">
-                                <i class="fas fa-warehouse"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="toggleProductStatus(${
-                              product.id
-                            })" title="Cambiar Estado">
-                                <i class="fas fa-power-off"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `
-    )
+    .map((product) => productosLoad(product))
     .join("");
 }
 
@@ -267,12 +212,12 @@ function updatePagination() {
   }
 
   let paginationHTML = `
-                <button onclick="changePage(${currentPage - 1})" ${
+                  <button onclick="changePage(${currentPage - 1})" ${
     currentPage <= 1 ? "disabled" : ""
   }>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            `;
+                      <i class="fas fa-chevron-left"></i>
+                  </button>
+              `;
 
   // Mostrar páginas
   const maxVisiblePages = 5;
@@ -285,21 +230,21 @@ function updatePagination() {
 
   for (let i = startPage; i <= endPage; i++) {
     paginationHTML += `
-                    <button onclick="changePage(${i})" ${
+                      <button onclick="changePage(${i})" ${
       i === currentPage ? 'class="current-page"' : ""
     }>
-                        ${i}
-                    </button>
-                `;
+                          ${i}
+                      </button>
+                  `;
   }
 
   paginationHTML += `
-                <button onclick="changePage(${currentPage + 1})" ${
+                  <button onclick="changePage(${currentPage + 1})" ${
     currentPage >= totalPages ? "disabled" : ""
   }>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            `;
+                      <i class="fas fa-chevron-right"></i>
+                  </button>
+              `;
 
   pagination.innerHTML = paginationHTML;
 }
@@ -432,39 +377,48 @@ function adjustStock(id) {
   const product = products.find((p) => p.id === id);
   if (!product) return;
 
-  const newStock = prompt(
-    `Ajustar stock para: ${product.nombre}\n` +
+  const texto = `Ajustar stock para: ${product.nombre}\n` +
       `Stock actual: ${product.stock_actual}\n` +
-      `Ingrese nuevo stock:`,
-    product.stock_actual
-  );
+      `Ingrese nuevo stock:`;
 
-  if (newStock !== null) {
-    const stock = parseInt(newStock);
-    if (isNaN(stock) || stock < 0) {
-      alert("Stock debe ser un número válido mayor o igual a 0");
-      return;
+  showAlertInput(texto,product.stock_actual,(valor) => {
+    if (valor !== null) {
+      const stock = parseInt(valor);
+      if (isNaN(stock) || stock < 0) {
+        showAlertConfirm("Stock debe ser un número válido mayor o igual a 0");
+        return;
+      }
+      
+      product.stock_actual = stock;
+      showAlertConfirm(`Stock actualizado para ${product.nombre}`, "success");
+      loadProducts();
     }
-
-    product.stock_actual = stock;
-    showAlert(`Stock actualizado para ${product.nombre}`, "success");
-    loadProducts();
-  }
+  });
 }
 
 function toggleProductStatus(id) {
   const product = products.find((p) => p.id === id);
+  console.log(id);
+
   if (!product) return;
 
   const action = product.estado ? "desactivar" : "activar";
-  if (confirm(`¿Está seguro de ${action} el producto "${product.nombre}"?`)) {
-    product.estado = product.estado ? 0 : 1;
-    showAlert(
-      `Producto ${product.estado ? "activado" : "desactivado"} exitosamente`,
-      "success"
-    );
-    loadProducts();
-  }
+  const action1 = product.estado ? false : true;
+
+  let texto = `¿Está seguro de ${action} el producto "${product.nombre}"?`;
+  const data = {
+    idProducto: id,
+    tipo: action1,
+  };
+  console.log(data);
+  showAlert(texto, "warning", () => {
+    product.estado = action1 ? 1:0;
+    $.post("./model/tasks/updateEstadoProductoTask.php", data, (response) => {
+      console.log(response);
+      localStorage.setItem("products",JSON.stringify(products));
+      loadProducts();
+    });
+  });
 }
 
 function showStockAlert() {
@@ -473,7 +427,11 @@ function showStockAlert() {
   );
 
   if (lowStockProducts.length === 0) {
-    alert("¡Excelente! No hay productos con stock bajo.");
+    Swal.fire({
+      title: "Excelente",
+      text: "¡Excelente! No hay productos con stock bajo.",
+      icon: "success",
+    });
     return;
   }
 
@@ -481,21 +439,82 @@ function showStockAlert() {
   lowStockProducts.forEach((product) => {
     message += `• ${product.nombre}: ${product.stock_actual} (mín: ${product.stock_minimo})\n`;
   });
-
-  alert(message);
+  Swal.fire({
+    title: "Oh No",
+    text: message,
+    icon: "question",
+  });
 }
 
-function showAlert(message, type) {
-  const alertContainer = document.getElementById("alertContainer");
-  const alertDiv = document.createElement("div");
-  alertDiv.className = `alert alert-${type}`;
-  alertDiv.textContent = message;
+function showAlertConfirm(message,type){
+  Swal.fire({
+    title: message,
+    icon: type,
+    draggable: true
+  });
+}
 
-  alertContainer.appendChild(alertDiv);
+function showAlert(message, type, funcion = () => {}) {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger",
+    },
+    buttonsStyling: false,
+  });
+  swalWithBootstrapButtons
+    .fire({
+      title: "Estas seguro ?",
+      text: message,
+      icon: type,
+      showCancelButton: true,
+      confirmButtonText: "Si desactivar",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        funcion();
+        swalWithBootstrapButtons.fire({
+          title: "Producto Desactivado!",
+          text: "Su producto ha sido desactivado",
+          icon: "success",
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire({
+          title: "Cancelado",
+          text: "No se elimino",
+          icon: "error",
+        });
+      }
+    });
+}
 
-  setTimeout(() => {
-    alertDiv.remove();
-  }, 5000);
+/**
+ * 
+ * @param {string} titulo 
+ * @param {string} valorDefault 
+ * @param {void} callback 
+ */
+function showAlertInput(titulo,valorDefault = "text",callback) {
+  Swal.fire({
+    title: titulo,
+    input: "text",
+    inputValue:valorDefault,
+    inputAttributes: {
+      autocapitalize: "off",
+    },
+    showCancelButton: true,
+    confirmButtonText: "Update",
+    showLoaderOnConfirm: true,
+    
+  }).then((result) => {
+    if(result.isConfirmed){
+      callback(result.value);
+    }else{
+      callback(null);
+    }
+  });
 }
 
 // Cerrar modal al hacer clic fuera
