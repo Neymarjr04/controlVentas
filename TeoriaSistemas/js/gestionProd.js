@@ -85,6 +85,7 @@ function setupEventListeners() {
 }
 
 function loadProducts() {
+  localStorage.setItem("products",JSON.stringify(products));
   const searchTerm = document.getElementById("searchInput").value.toLowerCase();
   const categoryFilter = document.getElementById("categoryFilter").value;
   const statusFilter = document.getElementById("statusFilter").value;
@@ -272,7 +273,6 @@ function openProductModal(productId = null) {
     const product = products.find((p) => p.id === productId);
     title.innerHTML = '<i class="fas fa-edit"></i> Editar Producto';
 
-    // Llenar formulario
     document.getElementById("productId").value = product.id;
     document.getElementById("productName").value = product.nombre;
     document.getElementById("productBarcode").value =
@@ -326,7 +326,7 @@ function saveProduct() {
     !productData.precio_venta ||
     !productData.categoria_id
   ) {
-    showAlert("Por favor complete todos los campos requeridos", "error");
+    showAlertConfirm("Por favor complete todos los campos requeridos", "error");
     return;
   }
 
@@ -340,14 +340,7 @@ function saveProduct() {
     }
   }
 
-  // Obtener nombre de categoría
-  const categories = {
-    1: "Abarrotes",
-    2: "Bebidas",
-    3: "Limpieza",
-    4: "Snacks",
-    5: "Lácteos",
-  };
+  const categories = JSON.parse(localStorage.getItem("categorias"));
   productData.categoria_nombre = categories[productData.categoria_id];
   productData.fecha_registro = new Date().toISOString().split("T")[0];
 
@@ -355,18 +348,35 @@ function saveProduct() {
     // Actualizar producto existente
     const index = products.findIndex((p) => p.id === editingProduct);
     if (index !== -1) {
-      products[index] = { ...products[index], ...productData };
-      showAlert("Producto actualizado exitosamente", "success");
+      const data = {
+        idProducto:index,
+        ...productData
+      }
+      $.post("./model/tasks/updateProductTask.php",data,(respuesta)=>{
+        const response = JSON.parse(respuesta);
+        if(response.status === "bien"){
+          products[index] = { ...products[index], ...productData };
+          showAlertConfirm("Producto actualizado exitosamente", "success");
+          closeProductModal();
+          loadProducts();
+          return;
+        }
+        showAlertConfirm(response.mensaje,"error");
+      })
     }
   } else {
     // Crear nuevo producto
     productData.id = Math.max(...products.map((p) => p.id)) + 1;
     products.push(productData);
-    showAlert("Producto creado exitosamente", "success");
+    $.post("./model/tasks/createProductTask.php",productData,(respuesta)=>{
+      const response = JSON.parse(respuesta);
+      if(response.status === "bien"){
+        showAlertConfirm("Producto creado exitosamente", "success");
+        closeProductModal();
+        loadProducts();
+      }
+    })
   }
-
-  closeProductModal();
-  loadProducts();
 }
 
 function editProduct(id) {
@@ -390,8 +400,21 @@ function adjustStock(id) {
       }
       
       product.stock_actual = stock;
-      showAlertConfirm(`Stock actualizado para ${product.nombre}`, "success");
-      loadProducts();
+      const data = {
+        idProduct:id,
+        cantidad:stock
+      }
+      $.post("./model/tasks/updateCantidadProdTask.php",data,(respuesta)=>{
+        const response = JSON.parse(respuesta);
+        console.log(response);
+        if(response.status === "bien"){
+          showAlertConfirm(`Stock actualizado para ${product.nombre}`, "success");
+          loadProducts();
+          return;
+        }
+        showAlertConfirm( response.mensaje,"error");
+
+      })
     }
   });
 }
