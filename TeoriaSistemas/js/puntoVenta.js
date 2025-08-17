@@ -1,94 +1,48 @@
-const products = [
+let products = [
   {
     id: 1,
-    name: "Coca Cola 500ml",
-    price: 3.5,
-    stock: 45,
-    category: "bebidas",
-    barcode: "7894900011517",
-  },
-  {
-    id: 2,
-    name: "Pan Integral",
-    price: 4.2,
-    stock: 25,
-    category: "abarrotes",
-    barcode: "7894900011518",
-  },
-  {
-    id: 3,
-    name: "Leche Gloria UHT",
-    price: 4.8,
-    stock: 32,
-    category: "abarrotes",
-    barcode: "7894900011519",
-  },
-  {
-    id: 4,
-    name: "Aceite Primor 1L",
-    price: 8.5,
-    stock: 15,
-    category: "abarrotes",
-    barcode: "7894900011520",
-  },
-  {
-    id: 5,
-    name: "Detergente Ariel",
-    price: 12.9,
-    stock: 8,
-    category: "limpieza",
-    barcode: "7894900011521",
-  },
-  {
-    id: 6,
-    name: "Galletas Oreo",
-    price: 5.2,
-    stock: 28,
-    category: "snacks",
-    barcode: "7894900011522",
-  },
-  {
-    id: 7,
-    name: "Arroz Costeño 5kg",
-    price: 18.5,
-    stock: 12,
-    category: "abarrotes",
-    barcode: "7894900011523",
-  },
-  {
-    id: 8,
-    name: "Inca Kola 500ml",
-    price: 3.2,
-    stock: 38,
-    category: "bebidas",
-    barcode: "7894900011524",
-  },
-  {
-    id: 9,
-    name: "Papel Higiénico Suave",
-    price: 6.8,
-    stock: 22,
-    category: "limpieza",
-    barcode: "7894900011525",
-  },
-  {
-    id: 10,
-    name: "Yogurt Gloria Fresa",
-    price: 3.8,
-    stock: 18,
-    category: "abarrotes",
-    barcode: "7894900011526",
+    nombre: "Coca Cola 500ml",
+    precio_venta: 3.5,
+    stock_actual: 45,
+    categoria_nombre: "bebidas",
+    codigo_barras: "7894900011517",
   },
 ];
 
 let cart = [];
 let currentCategory = "todos";
-
+let categorias = [
+  {
+    id: 1,
+    descripcion: "Productos básicos de alimentación",
+    estado: 1,
+    id: 1,
+    nombre: "Abarrotes",
+  },
+];
 // Inicializar la aplicación
 document.addEventListener("DOMContentLoaded", function () {
+  products = JSON.parse(localStorage.getItem("products"));
+  categorias = JSON.parse(localStorage.getItem("categorias"));
+  setCategorias();
   displayProducts();
   setupEventListeners();
 });
+
+function setCategorias() {
+  const categori = document.getElementById("categoriasData");
+  categori.innerHTML = `
+  <button class="category-btn active" data-category="todos">
+    Todos
+  </button>
+  `;
+  categori.innerHTML += categorias.map(
+    (categoria) => `
+    <button class="category-btn" data-category="${categoria.id}">
+      ${categoria.nombre}
+    </button>
+  `);
+}
 
 function setupEventListeners() {
   // Búsqueda de productos
@@ -158,7 +112,7 @@ function displayProducts(searchTerm = "") {
   // Filtrar por categoría
   if (currentCategory !== "todos") {
     filteredProducts = products.filter(
-      (product) => product.category === currentCategory
+      (product) => product.categoria_id == currentCategory
     );
   }
 
@@ -166,8 +120,8 @@ function displayProducts(searchTerm = "") {
   if (searchTerm) {
     filteredProducts = filteredProducts.filter(
       (product) =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.barcode.includes(searchTerm)
+        product.nombre.toLowerCase().includes(searchTerm) ||
+        product.codigo_barras.includes(searchTerm)
     );
   }
 
@@ -178,11 +132,13 @@ function displayProducts(searchTerm = "") {
                     <div class="product-image">
                         <i class="fas fa-box"></i>
                     </div>
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">S/ ${product.price.toFixed(
+                    <div class="product-name">${product.nombre}</div>
+                    <div class="product-price">S/ ${product.precio_venta.toFixed(
                       2
                     )}</div>
-                    <div class="product-stock">Stock: ${product.stock}</div>
+                    <div class="product-stock">Stock: ${
+                      product.stock_actual
+                    }</div>
                 </div>
             `
     )
@@ -191,23 +147,24 @@ function displayProducts(searchTerm = "") {
 
 function addToCart(productId) {
   const product = products.find((p) => p.id === productId);
+  console.log(product);
   if (!product) return;
 
   const existingItem = cart.find((item) => item.id === productId);
 
   if (existingItem) {
-    if (existingItem.quantity < product.stock) {
+    if (existingItem.quantity < product.stock_actual) {
       existingItem.quantity++;
-      existingItem.subtotal = existingItem.quantity * existingItem.price;
+      existingItem.subtotal = existingItem.quantity * existingItem.precio_venta;
     }
   } else {
     cart.push({
       id: product.id,
-      name: product.name,
-      price: product.price,
+      nombre: product.nombre,
+      precio_venta: product.precio_venta,
       quantity: 1,
-      subtotal: product.price,
-      stock: product.stock,
+      subtotal: product.precio_venta,
+      stock_actual: product.stock_actual,
     });
   }
 
@@ -228,13 +185,13 @@ function updateQuantity(productId, newQuantity) {
     return;
   }
 
-  if (newQuantity > item.stock) {
-    alert(`Stock máximo disponible: ${item.stock}`);
+  if (newQuantity > item.stock_actual) {
+    alert(`Stock máximo disponible: ${item.stock_actual}`);
     return;
   }
 
   item.quantity = newQuantity;
-  item.subtotal = item.quantity * item.price;
+  item.subtotal = item.quantity * item.precio_venta;
   updateCartDisplay();
 }
 
@@ -260,8 +217,8 @@ function updateCartDisplay() {
       (item) => `
                 <div class="cart-item">
                     <div class="item-info">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">S/ ${item.price.toFixed(
+                        <div class="item-name">${item.nombre}</div>
+                        <div class="item-price">S/ ${item.precio_venta.toFixed(
                           2
                         )} c/u</div>
                         <div class="quantity-controls">
@@ -274,7 +231,7 @@ function updateCartDisplay() {
                                    onchange="updateQuantity(${
                                      item.id
                                    }, parseInt(this.value))"
-                                   min="1" max="${item.stock}">
+                                   min="1" max="${item.stock_actual}">
                             <button class="qty-btn" onclick="updateQuantity(${
                               item.id
                             }, ${item.quantity + 1})">+</button>
@@ -344,31 +301,42 @@ function processSale() {
     const cashAmount =
       parseFloat(document.getElementById("cashAmount").value) || 0;
     if (cashAmount < total) {
-      alert("El monto recibido es menor al total de la venta");
+      showAlertConfirm("El monto recibido es menor al total de la venta","error");
       return;
     }
   }
-
+  $.post("./model/tasks/generateVentaTask.php",cart,(response)=>{
+    const respuesta = JSON.parse(response);
+    if(respuesta.status == "bien"){
+      console.log(respuesta);
+    }
+    alert("Venta procesada exitosamente!");
+    clearCart();
+    closeCheckoutModal();
+  });
   // Simular procesamiento
-  alert("Venta procesada exitosamente!");
 
   // Limpiar carrito y cerrar modal
-  clearCart();
-  closeCheckoutModal();
 }
 
 function clearCart() {
   cart = [];
   updateCartDisplay();
 }
-
+function showAlertConfirm(message,type){
+  Swal.fire({
+    title: message,
+    icon: type,
+    draggable: true
+  });
+}
 function holdSale() {
   if (cart.length === 0) {
-    alert("No hay productos en el carrito");
+    showAlertConfirm("No hay productos en el carrito","error");
     return;
   }
-  alert(
-    "Venta retenida. Podrás recuperarla desde el menú de ventas pendientes."
+  showAlertConfirm(
+    "Venta retenida. Podrás recuperarla desde el menú de ventas pendientes.","error"
   );
 }
 

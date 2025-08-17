@@ -14,6 +14,8 @@
     />
     <link rel="stylesheet" href="./styles/puntoVenta.css" />
     <link rel="stylesheet" href="./styles/navbar.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="./js/index.js"></script>
     <script defer src="./js/puntoVenta.js"></script>
   </head>
@@ -46,7 +48,7 @@
               placeholder="Buscar producto por nombre o código de barras..."
             />
           </div>
-          <div class="quick-categories">
+          <div class="quick-categories" id="categoriasData" >
             <button class="category-btn active" data-category="todos">
               Todos
             </button>
@@ -112,9 +114,6 @@
             disabled
           >
             <i class="fas fa-credit-card"></i> Procesar Venta
-          </button>
-          <button class="btn btn-secondary" onclick="holdSale()">
-            <i class="fas fa-pause"></i> Retener Venta
           </button>
           <button class="btn btn-danger" onclick="clearCart()">
             <i class="fas fa-trash"></i> Limpiar Carrito
