@@ -1,0 +1,126 @@
+
+.modal-fondo{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: #00000088;
+    z-index: 51;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+}
+
+
+.modal-cuerpo{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    width: 30rem;
+    height: 35rem;
+    background-color: #343a40;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    color: #ccc;
+}
+
+.modal-cuerpo p{
+    height: 5px;
+}
+
+.modal-titulo, .modal-footer1{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    background: rgb(1, 19, 34);
+    
+}
+
+.boton-cerrar{
+    background: #949494;
+    color: #383838;
+    width: 20px;
+    height: 20px !important;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.boton-cerrar:hover{
+    background: #ccc;
+    color: #18191a;
+    transform: scale(1.2);
+}
+
+.modal-footer1{
+    position: sticky;
+    color: #ccc;
+    top: 45pc;
+    height: 50px;
+}
+
+.modal-footer1 .botones{
+    background-color: #18191a;
+    color: #ccc;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.5s ease;
+    border: 1px solid #3f3f3f;
+}
+.modal-footer1 .botones:hover{
+    background-color: #141618;
+    color: #ccc;
+    border: 1.5px solid #fffafa;
+}
+
+
+.modal-contenido{
+    padding: 10px;
+    overflow: scroll;
+    height: 28rem;
+}
+
+.no-scroll{
+    overflow: hidden;
+}
+
+.animacionCerradoModal{
+    animation: desaparecer 0.5s linear forwards;
+}
+
+.animacionAparecer {
+    animation: aparecer 0.5s ease forwards;
+}
+
+@keyframes aparecer{
+    0%{
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes desaparecer{
+    0%{
+        opacity: 1;
+    }
+
+    100%{
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-contenido{
+        height: 28rem;
+        overflow: scroll;
+    }
+}

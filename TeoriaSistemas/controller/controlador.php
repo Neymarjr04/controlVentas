@@ -33,5 +33,9 @@
         include "pages/cajaPage.php";
     }
 
+    public static function cajaResults(){
+        include "pages/cajaResults.php";
+    }
+
    } 
 ?>

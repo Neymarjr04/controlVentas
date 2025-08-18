@@ -1,12 +1,12 @@
 <?php
-    require("../Response.php");
-    require("../conexion.php");
+    require("../../Response.php");
+    require("../../conexion.php");
     session_start();
 
     $db = new Conexion();
     $sql = "";
-    if ($_SESSION['rol'] == "administrado") {
-        $sql = "SELECT * FROM caja DESC";
+    if ($_SESSION['rol'] == "administrador") {
+        $sql = "SELECT * FROM caja ORDER BY id DESC";
     } else {
         $sql = "SELECT * FROM caja
                 WHERE estado = 'abierta';";

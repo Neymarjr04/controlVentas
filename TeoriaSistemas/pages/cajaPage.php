@@ -50,26 +50,25 @@ $direccion = "caja";
       </div>
     </div>
 
-    <div class="contenedor-caja">
-      <table class="table">
+    <div class="table-container">
+      <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Monto Inicial</th>
-            <th>Monto Actual</th>
-            <th>Fecha Apertura</th>
-            <th>Fecha Cierre</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th>Nombre</th>
+            <th>estado</th>
+            <th>Fecha apertura</th>
+            <th>Fecha cierre</th>
+            <th>Monto Inicial </th>
+            <th>Monto Final </th>
+            <th> Detalles </th>
           </tr>
         </thead>
-        <tbody id="tablaCajas">
+        <tbody id="productsTableBody">
         </tbody>
       </table>
     </div>
   </div>
 
-  </div>
 
   <div id="productModal" class="modal">
     <div class="modal-content">

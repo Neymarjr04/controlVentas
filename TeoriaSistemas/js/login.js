@@ -4,7 +4,7 @@
  *  mensaje:string,
  *  data:Array
  * }} Response
- * 
+ *
  */
 $(document).ready(function () {
   document.getElementById("loginForm").addEventListener("submit", function (e) {
@@ -18,63 +18,68 @@ $(document).ready(function () {
     };
     $.post("./model/tasks/loginTask.php", datos, (response) => {
       /**@type {Response}  */
-      const respuesta  = JSON.parse(response);
-      if(respuesta.status !== "bien"){
-        showAlert(respuesta.mensaje,"error");
+      const respuesta = JSON.parse(response);
+      if (respuesta.status !== "bien") {
+        showAlert(respuesta.mensaje, "error");
       }
-      
-      $.post("./model/tasks/obtenerProductosTask.php",(response2)=>{
+
+      $.post("./model/tasks/obtenerProductosTask.php", (response2) => {
         const datos = JSON.parse(response2);
         let productos = [];
-        datos.data.forEach((objeto)=>{
+        datos.data.forEach((objeto) => {
           let producto = {
-            id:objeto.id,
-            nombre:objeto.nombre,
-            codigo_barras:objeto.codigo_barras,
-            categoria_id:objeto.categoria_id,
-            categoria_nombre:objeto.categoria_nombre,
-            descripcion:objeto.descripcion,
-            precio_compra:Number(objeto.precio_compra),
-            precio_venta:Number(objeto.precio_venta),
-            stock_actual:Number(objeto.stock_actual),
-            stock_minimo:Number(objeto.stock_minimo),
-            unidad_medida:objeto.unidad_medida,
-            estado:objeto.estado,
-            fecha_registro:Date(objeto.fecha_registro) 
-          }
+            id: objeto.id,
+            nombre: objeto.nombre,
+            codigo_barras: objeto.codigo_barras,
+            categoria_id: objeto.categoria_id,
+            categoria_nombre: objeto.categoria_nombre,
+            descripcion: objeto.descripcion,
+            precio_compra: Number(objeto.precio_compra),
+            precio_venta: Number(objeto.precio_venta),
+            stock_actual: Number(objeto.stock_actual),
+            stock_minimo: Number(objeto.stock_minimo),
+            unidad_medida: objeto.unidad_medida,
+            estado: objeto.estado,
+            fecha_registro: Date(objeto.fecha_registro),
+          };
           productos.push(producto);
-        })
+        });
         localStorage.setItem("products", JSON.stringify(productos));
       });
 
-      $.post("./model/tasks/getCategoriasTask.php",(response)=>{
+      $.post("./model/tasks/getCategoriasTask.php", (response) => {
         const respuestaServer = JSON.parse(response);
         console.log("lleg aqui");
-        if(respuestaServer.status !== "bien"){
-          showAlert(respuesta.mensaje,"error");
+        if (respuestaServer.status !== "bien") {
+          showAlert(respuesta.mensaje, "error");
         }
-        localStorage.setItem("categorias",JSON.stringify(respuestaServer.data));
+        localStorage.setItem(
+          "categorias",
+          JSON.stringify(respuestaServer.data)
+        );
       });
 
-      $.post("./model/tasks/caja/getCajaTask.php",(response)=>{
+      $.post("./model/tasks/caja/getCajaTask.php", (response) => {
         const respuesta = JSON.parse(response);
-        if(respuesta.status == "bien"){
-          localStorage.setItem("cajas",respuesta.data);
+        console.log(respuesta);
+        if (respuesta.status !== "bien") {
+          console.log("error");
         }
+        sessionStorage.setItem("cajas", JSON.stringify(respuesta.data));
       });
 
-      showAlert(respuesta.mensaje,"succes",true);
+      showAlert(respuesta.mensaje, "succes", true);
     });
   });
 });
 
-function showAlert(message, type,estado = false) {
+function showAlert(message, type, estado = false) {
   const alertContainer = document.getElementById("alertContainer");
   alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
 
   setTimeout(() => {
-    alertContainer.innerHTML = "";  
-    if(estado){
+    alertContainer.innerHTML = "";
+    if (estado) {
       location.reload(true);
     }
   }, 3000);

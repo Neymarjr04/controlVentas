@@ -9,9 +9,10 @@
         if (isset($_SERVER["REQUEST_URI"]) && $valor != "/" && !isset($_GET['i'])) {
 
             $valor = ltrim($valor, "/");
-
             if (method_exists("ModeloControlador", $valor)) {
                 ModeloControlador::{$valor}();
+            }else if(isset($_GET['idCaja'])){
+                ModeloControlador::cajaResults();
             } else {
                 ModeloControlador::error_pagina();
             }

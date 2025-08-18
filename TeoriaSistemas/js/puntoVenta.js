@@ -1,3 +1,4 @@
+
 let products = [
   {
     id: 1,
@@ -21,13 +22,47 @@ let categorias = [
   },
 ];
 // Inicializar la aplicación
+const modal = new ModalControl({ tiempoCerrado: 0.5 });
+let selecionCaja = 0;
 document.addEventListener("DOMContentLoaded", function () {
+
   products = JSON.parse(localStorage.getItem("products"));
   categorias = JSON.parse(localStorage.getItem("categorias"));
   setCategorias();
   displayProducts();
   setupEventListeners();
+  selectionCaja();
 });
+
+function selectionCaja(){
+  const cajas = JSON.parse(sessionStorage.getItem("cajas")) || [];
+  if(!cajas || cajas.length < 2 ){
+    selecionCaja = cajas[0].id;
+    return
+  }
+
+  let contenido = "";
+  let empaquetador = document.createElement("div");
+  empaquetador.classList.add("contenedor-cajas");
+  cajas.forEach((caja)=>{
+    contenido += `
+    <div class="caja" onclick="selectCaja(${caja.id})" >
+      <p> ${caja.nombre} </p>
+      <p> ${caja.fecha_apertura} </p>
+    </div> 
+    `;
+  })
+  empaquetador.innerHTML = contenido;
+
+  modal.setContenidoModal("Seleccione la caja",empaquetador);
+  modal.activarModal();
+
+}
+
+function selectCaja(cajaData){
+  selecionCaja = cajaData;
+  modal.cerrarEvento();
+}
 
 function setCategorias() {
   const categori = document.getElementById("categoriasData");

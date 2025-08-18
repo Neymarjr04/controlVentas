@@ -14,9 +14,11 @@
     />
     <link rel="stylesheet" href="./styles/puntoVenta.css" />
     <link rel="stylesheet" href="./styles/navbar.css">
+    <link rel="stylesheet" href="./styles/modal.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script defer src="./js/index.js"></script>
+    <script defer src="./components/modal.js"></script>
     <script defer src="./js/puntoVenta.js"></script>
   </head>
   <body>
