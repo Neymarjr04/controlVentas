@@ -11,7 +11,7 @@ if (!isset($_POST['datos']) || !is_array($_POST['datos'])) {
 $db = new Conexion();
 
 $productos        = $_POST['datos'];
-$cliente_id       = isset($_POST["cliente_id"]) ? intval($_POST["cliente_id"]) : null; // NULL real en SQL
+$cliente_id       = isset($_POST["cliente_id"]) ? intval($_POST["cliente_id"]) : 1; 
 $usuario_id       = isset($_SESSION['usuario']) ? intval($_SESSION['usuario']) : 0;
 $metodo_pago      = isset($_POST["metodo_pago"]) ? strtolower(trim($_POST["metodo_pago"])) : "efectivo";
 $tipo_comprobante = isset($_POST["tipo_comprobante"]) ? strtolower(trim($_POST["tipo_comprobante"])) : "ticket";
@@ -57,7 +57,7 @@ if ($caja_ok <= 0) {
 }
 
 $venta_seq    = intval($db->consulta2("SELECT COALESCE(MAX(id)+1,1) FROM ventas"));
-$numero_venta = "V" . date("Ymd") . str_pad((string)$venta_seq, 6, "0", STR_PAD_LEFT);
+$numero_venta = "V" . date("Ymd") . str_pad((string)$venta_seq, 6, "0", STR_PAD_LEFT) . rand(1000, 9999);
 
 
 $cli_sql = is_null($cliente_id) ? "NULL" : $cliente_id;
@@ -71,6 +71,7 @@ VALUES
 $rVenta = $db->addDato($qVenta);
 
 $venta_id = $rVenta;
+
 
 $values = [];
 
