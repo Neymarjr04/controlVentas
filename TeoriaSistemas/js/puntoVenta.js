@@ -340,7 +340,12 @@ function processSale() {
       return;
     }
   }
-  $.post("./model/tasks/generateVentaTask.php",cart,(response)=>{
+  const datos = {
+    caja:selecionCaja,
+    datos:cart
+  }
+  console.log(datos);
+  $.post("./model/tasks/generateVentaTask.php",datos,(response)=>{
     const respuesta = JSON.parse(response);
     if(respuesta.status == "bien"){
       console.log(respuesta);

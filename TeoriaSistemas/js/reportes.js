@@ -3,8 +3,7 @@ let ventasChart = null;
 let metodosPagoChart = null;
 let currentChartType = "line";
 
-// Datos de ejemplo
-const reportData = {
+let reportData = {
   ventas: [
     { fecha: "2024-08-01", ventas: 0, ingresos: 0 },
     { fecha: "2024-08-02", ventas: 0, ingresos: 0.25 },
@@ -36,11 +35,18 @@ const reportData = {
   ],
 };
 
-// Inicializar la aplicación
 document.addEventListener("DOMContentLoaded", function () {
+  reporteGet();
   setupDates();
   loadReports();
 });
+
+function reporteGet(){
+  $.post("./model/tasks/reportesTask.php",(response)=>{
+    const respuesta = JSON.parse(response);
+    reportData = respuesta.data;
+  })
+}
 
 function setupDates() {
   const today = new Date();
@@ -123,7 +129,6 @@ function showLoading(show) {
 }
 
 function updateStats() {
-  // Calcular estadísticas
   const totalVentas = reportData.ventas.reduce(
     (sum, item) => sum + item.ventas,
     0
@@ -138,7 +143,6 @@ function updateStats() {
   );
   const ticketPromedio = totalIngresos / totalVentas;
 
-  // Actualizar elementos
   document.getElementById("totalVentas").textContent =
     totalVentas.toLocaleString();
   document.getElementById(
