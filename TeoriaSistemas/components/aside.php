@@ -1,5 +1,4 @@
 <?php
-  session_start();
 ?>
 <aside id="sidebarMaster" class="sidebar  desactive">
     <div class="sidebar-header">
